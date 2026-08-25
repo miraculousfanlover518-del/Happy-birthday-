@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, My Love! 🎉</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #ff4b72;
+      --secondary: #ff85a2;
+      --bg: #fff5f7;
+      --card-bg: #ffffff;
+      --text: #2d3436;
+      --accent: #ffd166;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #ffeef2 0%, #fff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Floating Music Toggle */
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 75, 114, 0.4);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Header Hero */
+    header {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #ffe0e6;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    p.subtitle {
+      font-size: 1rem;
+      color: #636e72;
+      margin-top: 8px;
+    }
+
+    /* Celebration Button */
+    .btn-celebrate {
+      margin-top: 20px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 75, 114, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .btn-celebrate:active {
+      transform: scale(0.95);
+    }
+
+    /* Photo Gallery */
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 40px 0 20px;
+      text-align: center;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 12px 12px 24px 12px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      width: calc(50% - 15px);
+      max-width: 260px;
+      text-align: center;
+      transform: rotate(calc(var(--r, 0) * 1deg));
+      transition: transform 0.3s ease;
+    }
+
+    .polaroid:nth-child(even) { --r: 2; }
+    .polaroid:nth-child(odd) { --r: -2; }
+    .polaroid:hover { transform: scale(1.04) rotate(0deg); }
+
+    .polaroid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .polaroid-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      margin-top: 12px;
+      color: #2d3436;
+    }
+
+    /* Love Letter Card */
+    .letter-card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 22px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(255, 133, 162, 0.15);
+      margin-top: 30px;
+      border: 1px dashed var(--secondary);
+    }
+
+    .letter-card h3 {
+      font-family: 'Caveat', cursive;
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .letter-card p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 14px;
+    }
+
+    .signature {
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      text-align: right;
+      color: var(--primary);
+      margin-top: 15px;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding-bottom: 30px;
+      font-size: 13px;
+      color: #b2bec3;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Music (Replace the audio src link with any direct mp3 link) -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-acoustic-guitar-112191.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button class="music-btn" onclick="toggleMusic()">
+    🎵 <span id="music-text">Play Song</span>
+  </button>
+
+  <!-- Hero Section -->
+  <header>
+    <div class="badge">Special Day 🎂</div>
+    <h1>Happy Birthday,<br>My Favorite Person! ❤️</h1>
+    <p class="subtitle">Wishing you the happiest and most magical year ahead.</p>
+    <button class="btn-celebrate" onclick="triggerCelebration()">Tap For Birthday Magic! ✨</button>
+  </header>
+
+  <!-- Photo Memory Section -->
+  <h2 class="section-title">Our Best Moments 📸</h2>
+  <div class="gallery">
+    <!-- Replace the image URL (src) with your direct photo links or keep placeholders for now -->
+    <div class="polaroid">
+      <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" alt="Memory 1" />
+      <div class="polaroid-caption">That unforgettable smile ✨</div>
+    </div>
+    <div class="polaroid">
+      <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=600" alt="Memory 2" />
+      <div class="polaroid-caption">My favorite adventure partner 🗺️</div>
+    </div>
+    <div class="polaroid">
+      <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600" alt="Memory 3" />
+      <div class="polaroid-caption">Laughed until our cheeks hurt 💖</div>
+    </div>
+    <div class="polaroid">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600" alt="Memory 4" />
+      <div class="polaroid-caption">Always proud of you 🌟</div>
+    </div>
+  </div>
+
+  <!-- Birthday Love Letter -->
+  <div class="letter-card">
+    <h3>Dear Birthday Boy,</h3>
+    <p>
+      Happy Birthday! I wanted to make something special just for you to remind you how much you mean to me. Thank you for always bringing so much joy, laughter, and comfort into my life.
+    </p>
+    <p>
+      I hope this year brings you closer to all your dreams, big achievements, and endless reasons to smile. Have the absolute best day today—you deserve everything wonderful in the world!
+    </p>
+    <div class="signature">With all my love ❤️</div>
+  </div>
+
+  <footer>
+    Made with love, just for your birthday ✨
+  </footer>
+
+  <script>
+    // Confetti Fireworks Burst
+    function triggerCelebration() {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+      }, 250);
+    }
+
+    // Trigger an initial celebratory burst on page load
+    window.addEventListener('load', () => {
+      setTimeout(triggerCelebration, 500);
+    });
+
+    // Music Player Controller
+    const music = document.getElementById('bg-music');
+    const musicText = document.getElementById('music-text');
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        musicText.innerText = "Pause Song";
+      } else {
+        music.pause();
+        musicText.innerText = "Play Song";
+      }
+    }
+  </script>
+</body>
+</html>
